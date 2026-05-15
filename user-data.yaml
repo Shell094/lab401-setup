@@ -1,0 +1,41 @@
+#cloud-config
+autoinstall:
+  version: 1
+  # เลือกภาษาและคีย์บอร์ด
+  locale: en_US.UTF-8
+  keyboard:
+    layout: us,th
+    toggle: alt_shift_toggle
+  
+  # ส่วน Network บน Server แนะนำให้ใช้ DHCP ไปก่อน 
+  # แล้วค่อยใช้สคริปต์ network.sh จัดการ IP ตาม MAC ภายหลัง
+  network:
+    network:
+      version: 2
+      ethernets:
+        all-en-interfaces:
+          match:
+            name: "e*"
+          dhcp4: true
+
+  identity:
+    hostname: lab-temp-host
+    username: localadmin
+    # รหัสผ่านคือ: ubuntu (แนะนำให้เปลี่ยน)
+    password: "$6$exDY1S9XbR3929.j$m7J9vN6XE8V9Z4D0pZ.n8.2I1G9p5.B.G9y1"
+
+  # ติดตั้ง Package พื้นฐานที่ต้องใช้ในสคริปต์
+  packages:
+    - git
+    - curl
+    - wget
+    - openssh-server
+    - sssd
+    - libpam-sss
+    - uidmap
+    - dbus-user-session
+
+  # คำสั่งให้ไปดึงสคริปต์ติดตั้ง Software มารันหลังจากลง OS เสร็จ
+  late-commands:
+    - curtin in-target -- target/usr/bin/wget -O /tmp/setup_lab.sh https://raw.githubusercontent.com/your-repo/setup_lab.sh
+    - curtin in-target -- bash /tmp/setup_lab.sh
