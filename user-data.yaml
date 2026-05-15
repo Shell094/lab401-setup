@@ -35,7 +35,7 @@ autoinstall:
     - uidmap
     - dbus-user-session
 
-  # คำสั่งให้ไปดึงสคริปต์ติดตั้ง Software มารันหลังจากลง OS เสร็จ
+ # คำสั่งให้ไปดึงสคริปต์ติดตั้ง Software มารันหลังจากลง OS เสร็จ
   late-commands:
-    - curtin in-target -- target/usr/bin/wget -O /tmp/setup_lab.sh https://raw.githubusercontent.com/your-repo/setup_lab.sh
+    - curtin in-target -- wget -O /tmp/setup_lab.sh https://raw.githubusercontent.com/Shell094/lab401-setup/main/setup_lab.sh
     - curtin in-target -- bash /tmp/setup_lab.sh
